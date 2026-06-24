@@ -1,107 +1,359 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Drug Solubility Predictor</title>
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: #0f172a;
-            color: #f1f5f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background: #1e293b;
-            padding: 40px;
-            border-radius: 15px;
-            width: 420px;
-            text-align: center;
-            box-shadow: 0 0 25px rgba(0,0,0,0.5);
-        }
-
-        h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            color: #38bdf8;
-            font-weight: bold;
-        }
-
-        p {
-            font-size: 14px;
-            color: #94a3b8;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px;
-            margin-top: 20px;
-            border-radius: 8px;
-            border: none;
-            outline: none;
-            font-size: 16px;
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 14px;
-            width: 100%;
-            border: none;
-            border-radius: 8px;
-            background: #22c55e;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: #16a34a;
-        }
-
-        .result {
-            margin-top: 25px;
-            padding: 15px;
-            border-radius: 10px;
-            background: #020617;
-            font-size: 18px;
-            color: #22c55e;
-            font-weight: bold;
-        }
-
-        .smiles {
-            color: #38bdf8;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Molecular Property Prediction Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#020617,#0f172a,#1e293b);
+    color:white;
+    overflow-x:hidden;
+}
+.background{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background:
+    radial-gradient(circle at 20% 20%,rgba(59,130,246,.25),transparent 30%),
+    radial-gradient(circle at 80% 30%,rgba(14,165,233,.20),transparent 30%),
+    radial-gradient(circle at 50% 80%,rgba(168,85,247,.15),transparent 30%);
+    animation:floatbg 12s infinite alternate;
+}
+@keyframes floatbg{
+    from{transform:scale(1);}
+    to{transform:scale(1.1);}
+}
+.container{
+    width:95%;
+    max-width:1400px;
+    margin:auto;
+    padding:30px 15px;
+}
+.header{
+    text-align:center;
+    margin-bottom:30px;
+}
+.header h1{
+    font-size:3rem;
+    background:linear-gradient(to right,#38bdf8,#818cf8);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+.header p{
+    color:#cbd5e1;
+    margin-top:10px;
+}
+.main-grid{
+    display:grid;
+    grid-template-columns:1.6fr 1fr;
+    gap:25px;
+}
+.card{
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:22px;
+    padding:25px;
+}
+.card h2{
+    margin-bottom:20px;
+}
+.input-box{
+    width:100%;
+    padding:18px;
+    border-radius:12px;
+    border:1px solid #334155;
+    background:#0f172a;
+    color:white;
+    font-size:16px;
+}
+.input-box::placeholder{
+    color:#94a3b8;
+}
+.predict-btn{
+    width:100%;
+    margin-top:18px;
+    padding:18px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    color:white;
+    background:linear-gradient(90deg,#3b82f6,#06b6d4);
+    transition:.3s;
+}
+.predict-btn:hover{
+    transform:translateY(-2px);
+}
+.result{
+    margin-top:25px;
+    padding:25px;
+    border-radius:18px;
+    background:rgba(34,197,94,.08);
+    border:1px solid rgba(34,197,94,.2);
+}
+.result h3{
+    color:#22c55e;
+    margin-bottom:15px;
+}
+.prediction-value{
+    font-size:48px;
+    font-weight:700;
+    margin-top:10px;
+}
+.status{
+    margin-top:20px;
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+    font-weight:600;
+}
+.low{
+    background:#7f1d1d;
+    color:#fecaca;
+}
+.medium{
+    background:#78350f;
+    color:#fde68a;
+}
+.high{
+    background:#14532d;
+    color:#bbf7d0;
+}
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:25px;
+}
+.stat-card{
+    background:rgba(255,255,255,.04);
+    border-radius:15px;
+    padding:18px;
+    text-align:center;
+}
+.stat-card h4{
+    color:#94a3b8;
+    font-size:14px;
+}
+.stat-card p{
+    margin-top:10px;
+    font-size:24px;
+    font-weight:600;
+}
+.side-card{
+    background:rgba(255,255,255,.04);
+    border-radius:15px;
+    padding:18px;
+    margin-bottom:15px;
+}
+.side-card h3{
+    font-size:15px;
+    color:#cbd5e1;
+}
+.metric{
+    margin-top:10px;
+    font-size:24px;
+    font-weight:600;
+}
+.tech-list{
+    margin-top:10px;
+    line-height:2;
+}
+.footer-note{
+    margin-top:20px;
+    color:#94a3b8;
+    font-size:13px;
+}
+@media(max-width:950px){
+.main-grid{
+    grid-template-columns:1fr;
+}
+.stats{
+    grid-template-columns:1fr;
+}
+.header h1{
+    font-size:2.2rem;
+}
+}
+</style>
 </head>
-
 <body>
+<div class="background"></div>
+<div class="container">
+<div class="header">
+    <h1>🧬 Molecular Property Prediction</h1>
+    <p>Transformer-Based Drug Solubility Prediction Platform</p>
+</div>
+<div class="main-grid">
 
-    <div class="container">
-        <h1> Molecule Solubility Predictor</h1>
-        <p>Enter SMILES notation to predict solubility</p>
+    <!-- LEFT PANEL -->
+
+    <div class="card">
+
+        <h2>🔬 Molecule Analysis</h2>
 
         <form action="/predict" method="POST">
-            <input type="text" name="smiles" placeholder="e.g. CCO" required>
-            <button type="submit">Predict</button>
+
+            <input
+            type="text"
+            name="smiles"
+            class="input-box"
+            placeholder="Enter SMILES notation (Example: CCO)"
+            required>
+
+            <button class="predict-btn" type="submit">
+                🚀 Predict Solubility
+            </button>
+
         </form>
 
         {% if prediction %}
-            <div class="result">
-                Solubility: {{ prediction }}
-                <div class="smiles">SMILES: {{ smiles }}</div>
+
+        <div class="result">
+
+            <h3>Prediction Complete</h3>
+
+            <p><strong>SMILES:</strong> {{ smiles }}</p>
+
+            <div class="prediction-value">
+                {{ prediction }}
             </div>
+
+            {% if prediction < -1 %}
+                <div class="status low">
+                    🔴 Poorly Soluble Molecule
+                </div>
+            {% elif prediction < 1 %}
+                <div class="status medium">
+                    🟡 Moderately Soluble Molecule
+                </div>
+            {% else %}
+                <div class="status high">
+                    🟢 Highly Soluble Molecule
+                </div>
+            {% endif %}
+
+        </div>
+
         {% endif %}
+
+        <div class="stats">
+
+            <div class="stat-card">
+                <h4>Model</h4>
+                <p>Transformer</p>
+            </div>
+
+            <div class="stat-card">
+                <h4>Max Length</h4>
+                <p>50</p>
+            </div>
+
+            <div class="stat-card">
+                <h4>Status</h4>
+                <p>Active</p>
+            </div>
+
+        </div>
+
     </div>
+
+    <!-- RIGHT PANEL -->
+
+    <div class="card">
+
+        <h2>🧪 Molecular Insights</h2>
+
+        <div class="side-card">
+            <h3>Entered Molecule</h3>
+            <div class="metric">
+                {% if smiles %}
+                {{ smiles }}
+                {% else %}
+                Waiting...
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="side-card">
+            <h3>SMILES Length</h3>
+            <div class="metric">
+                {% if smiles %}
+                {{ smiles|length }}
+                {% else %}
+                0
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="side-card">
+            <h3>Solubility Level</h3>
+            <div class="metric">
+                {% if prediction %}
+                    {% if prediction < -1 %}
+                    Low
+                    {% elif prediction < 1 %}
+                    Medium
+                    {% else %}
+                    High
+                    {% endif %}
+                {% else %}
+                    --
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="side-card">
+            <h3>Application Area</h3>
+            <div class="metric">
+                Drug Discovery
+            </div>
+        </div>
+
+        <div class="side-card">
+            <h3>Technology Stack</h3>
+
+            <div class="tech-list">
+                ✓ Transformer Network<br>
+                ✓ PyTorch<br>
+                ✓ Flask<br>
+                ✓ SMILES Encoding<br>
+                ✓ Deep Learning
+            </div>
+        </div>
+
+        <div class="side-card">
+            <h3>Prediction Guide</h3>
+
+            <div class="tech-list">
+                🔴 Low : less than -1<br>
+                🟡 Medium : -1 to 1<br>
+                🟢 High : greater than 1
+            </div>
+        </div>
+
+        <div class="footer-note">
+            AI-powered molecular solubility estimation for pharmaceutical research and drug discovery.
+        </div>
+
+    </div>
+
+</div>
+
+</div>
 
 </body>
 </html>
+```
